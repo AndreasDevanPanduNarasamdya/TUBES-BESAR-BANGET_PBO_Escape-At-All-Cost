@@ -1,15 +1,31 @@
 package com.tubes.pbo.world;
 
 import com.tubes.pbo.models.Item;
+import com.tubes.pbo.models.Utilities;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public class Room {
     private String name;
     private String description;
     private Map<String, Room> exits;
+    private List<Utilities> utilities = new ArrayList<>(); // LIST BARU
+
+    // Method tambah utility
+    public void addUtility(Utilities util) {
+        utilities.add(util);
+    }
+
+    // Method cari utility berdasarkan nama
+    public Utilities getUtility(String name) {
+        for (Utilities util : utilities) {
+            if (util.getName().equalsIgnoreCase(name)) return util;
+        }
+        return null;
+    }
 
     // UPDATE 1: List untuk menampung item yang ada di ruangan ini
     private List<Item> items;
@@ -67,6 +83,12 @@ public class Room {
     public String getDescription() {
         StringBuilder sb = new StringBuilder();
         sb.append(description);
+        if (!utilities.isEmpty()) {
+            sb.append("\n[INTERAKSI]: ");
+            for (Utilities util : utilities) {
+                sb.append("[").append(util.getName()).append("] ");
+            }
+        }
 
         if (!items.isEmpty()) {
             sb.append("\n\n[ITEM DI SINI]: ");

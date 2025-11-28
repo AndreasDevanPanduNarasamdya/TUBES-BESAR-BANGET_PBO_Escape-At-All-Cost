@@ -14,7 +14,7 @@ public class KeyUtility extends Utilities {
 
         // Cek apakah nama item yang dipakai user cocok dengan kunci yang diminta
         if (inputKeyName.equalsIgnoreCase(requiredKeyName)) {
-            this.state = UtilityState.UNLOCKED;
+            this.state = UtilityState.OPEN;
             return "Krek... Kunci cocok! " + name + " terbuka.";
         } else {
             return "Kunci itu tidak pas untuk " + name + ".";

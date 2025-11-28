@@ -4,6 +4,8 @@ import com.tubes.pbo.models.Item;
 import com.tubes.pbo.models.ExitDoor;
 import com.tubes.pbo.models.OpenableUtility;
 import com.tubes.pbo.models.PasswordUtility;
+import com.tubes.pbo.models.Utilities; // Gunakan tipe data parent
+import com.tubes.pbo.patterns.factory.UtilityFactory; // Import Factory
 
 public class WorldBuilder {
 
@@ -23,44 +25,46 @@ public class WorldBuilder {
         Item theonepiece = new Item("Theonepiece", "The One Piece is Real.");
         Item kunci = new Item("Kunci", "Kunci besi berkarat. Sepertinya penting.");
 
-        ExitDoor pintuKeluar = new ExitDoor("Exit", "Pintu besi berat berkarat.", "Kunci");
 
-
-        // --- 3. ISI KAMAR TIDUR ---
-        // Jaket (Utility Biasa) -> Isi Kertas
-        OpenableUtility jaket = new OpenableUtility("Jaket", "Jaket kulit tergantung.", kertasKode);
+        // --- 3. ISI KAMAR TIDUR (PAKAI FACTORY) ---
+        // Sebelum: OpenableUtility jaket = new OpenableUtility(...)
+        // Sesudah:
+        Utilities jaket = UtilityFactory.createContainer("Jaket", "Jaket kulit tergantung.", kertasKode);
         bedroom.addUtility(jaket);
 
-        // Lemari/Closet (Utility Biasa) -> Isi Baterai
-        OpenableUtility closet = new OpenableUtility("Lemari", "Lemari pakaian kayu.", baterai);
+        Utilities closet = UtilityFactory.createContainer("Lemari", "Lemari pakaian kayu.", baterai);
         bedroom.addUtility(closet);
 
 
         // --- 4. ISI RUANG TAMU ---
-        // UBAH BARIS INI (Hapus kata " Besi")
-        PasswordUtility brankas = new PasswordUtility("Brankas", "Butuh 4 digit PIN", theonepiece, "1234");
+        // (Kosong)
+
+
+        // --- 5. ISI GUDANG (PAKAI FACTORY) ---
+        // Sebelum: PasswordUtility brankas = new PasswordUtility(...)
+        // Sesudah:
+        Utilities brankas = UtilityFactory.createSafe("Brankas", "Butuh 4 digit PIN", theonepiece, "1234");
         storageRoom.addUtility(brankas);
 
+        // Pintu Keluar
+        Utilities pintuKeluar = UtilityFactory.createExit("Exit", "Pintu besi berat.", "Kunci");
         storageRoom.addUtility(pintuKeluar);
 
-        // --- 5. ISI DAPUR ---
-        // Kulkas (Utility Biasa) -> Isi Jeruk
-        OpenableUtility kulkas = new OpenableUtility("Kulkas", "Kulkas 1 pintu.", kunci);
+
+        // --- 6. ISI DAPUR (PAKAI FACTORY) ---
+        Utilities kulkas = UtilityFactory.createContainer("Kulkas", "Kulkas 1 pintu.", kunci);
         kitchen.addUtility(kulkas);
 
-        // Kabinet (Utility Biasa) -> Isi Sekrup
-        OpenableUtility cabinet = new OpenableUtility("Kabinet", "Laci penyimpanan alat dapur.", sekrup);
+        Utilities cabinet = UtilityFactory.createContainer("Kabinet", "Laci penyimpanan.", sekrup);
         kitchen.addUtility(cabinet);
-
-        // Kitchen <-> Storage (NEW CONNECTION)
-        kitchen.setExit("right", storageRoom);
-        storageRoom.setExit("left", kitchen);
 
         // --- 6. HUBUNGKAN RUANGAN ---
         bedroom.setExit("right", livingRoom);
         livingRoom.setExit("left", bedroom);
         livingRoom.setExit("right", kitchen);
         kitchen.setExit("left", livingRoom);
+        kitchen.setExit("right", storageRoom);
+        storageRoom.setExit("left", kitchen);
 
         return bedroom;
     }

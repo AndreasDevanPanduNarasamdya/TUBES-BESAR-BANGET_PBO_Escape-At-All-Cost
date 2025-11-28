@@ -13,6 +13,16 @@ public abstract class Utilities {
         this.state = UtilityState.LOCKED; // Default terkunci
     }
 
+    // Method baru: Mengintip item tanpa mengambil (untuk deskripsi)
+    public Item peekItem() {
+        return itemInside;
+    }
+
+    // Method Helper Baru
+    public boolean isOpen() {
+        return state == UtilityState.OPEN;
+    }
+
     public String getName() { return name; }
 
     public String getDescription() {

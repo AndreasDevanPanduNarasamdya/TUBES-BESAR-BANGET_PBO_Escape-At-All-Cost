@@ -13,7 +13,7 @@ public class PasswordUtility extends Utilities {
         if (!isLocked()) return "Benda ini sudah terbuka kok.";
 
         if (input.equalsIgnoreCase(correctPassword)) {
-            this.state = UtilityState.UNLOCKED;
+            this.state = UtilityState.OPEN;
             return "KLIK! Password benar. " + name + " terbuka! (Ketik 'ambil' untuk mengambil isinya)";
         } else {
             return "Password salah! " + name + " tidak bergeming.";

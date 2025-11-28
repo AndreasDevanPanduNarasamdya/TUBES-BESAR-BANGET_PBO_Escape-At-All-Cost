@@ -70,7 +70,12 @@ public class Room {
         return name;
     }
 
-    // Deskripsi digabung dengan list item/utility untuk teks narasi
+    // Getter baru untuk Logic Ambil (agar bisa looping cari barang di container)
+    public List<Utilities> getUtilities() {
+        return utilities;
+    }
+
+    // Update getDescription agar menampilkan isi container yang terbuka
     public String getDescription() {
         StringBuilder sb = new StringBuilder();
         sb.append(description);
@@ -78,16 +83,23 @@ public class Room {
         if (!utilities.isEmpty()) {
             sb.append("\n[INTERAKSI]: ");
             for (Utilities util : utilities) {
-                sb.append("[").append(util.getName()).append("] ");
+                sb.append("[").append(util.getName());
+
+                // UBAH DI SINI: Hanya tampilkan isi jika status OPEN
+                if (util.isOpen() && util.peekItem() != null) {
+                    sb.append(" (Isi: ").append(util.peekItem().getName()).append(")");
+                }
+
+                sb.append("] ");
             }
         }
 
         if (!items.isEmpty()) {
-            sb.append("\n[ITEM DI SINI]: ");
+            sb.append("\n[ITEM DI LANTAI]: "); // Ubah teks biar jelas bedanya
             for (Item item : items) {
                 sb.append(item.getName()).append(", ");
             }
-            sb.setLength(sb.length() - 2); // Hapus koma terakhir
+            sb.setLength(sb.length() - 2);
         }
         return sb.toString();
     }

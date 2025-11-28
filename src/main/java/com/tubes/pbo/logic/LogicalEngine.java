@@ -62,11 +62,11 @@ public class LogicalEngine {
             }
         }
 
-        // --- BUKA LOGIC (UPDATE: HAPUS KUNCI SETELAH DIPAKAI) ---
+// --- BUKA LOGIC (REVISI: ITEM TETAP DI DALAM) ---
         else if (input.startsWith("buka ")) {
             String[] parts = input.split(" ");
             if (parts.length < 2) {
-                lastOutput = "Format: 'buka [benda]' atau 'buka [benda] [kunci/password]'";
+                lastOutput = "Format: 'buka [benda]'";
             } else {
                 String utilityName = parts[1];
                 String codeOrKey = (parts.length > 2) ? parts[2] : "";
@@ -74,17 +74,15 @@ public class LogicalEngine {
                 com.tubes.pbo.models.Utilities util = currentRoom.getUtility(utilityName);
 
                 if (util != null) {
-                    // Cek status terkunci SEBELUM mencoba membuka
+                    // Cek status lock sebelum mencoba buka
                     boolean wasLocked = util.isLocked();
 
-                    // --- VALIDASI KEY UTILITY ---
+                    // Logic kunci (KeyUtility) - Sama seperti sebelumnya
                     if (util instanceof com.tubes.pbo.models.KeyUtility) {
                         if (codeOrKey.isEmpty()) {
                             lastOutput = "Terkunci! Gunakan: buka " + utilityName + " [nama_kunci]";
                             return;
                         }
-
-                        // Cek keberadaan item di tas
                         boolean hasItem = false;
                         for (Item i : tas.getItems()) {
                             if (i.getName().equalsIgnoreCase(codeOrKey)) {
@@ -97,28 +95,73 @@ public class LogicalEngine {
                             return;
                         }
                     }
-                    // ----------------------------
 
-                    // Coba buka (Solve)
+                    // Lakukan Solve
                     lastOutput = util.solve(codeOrKey);
 
-                    // --- LOGIC HAPUS KUNCI ---
-                    // Jika tadi terkunci, dan sekarang sudah TIDAK terkunci (berarti sukses dibuka)
-                    // DAN benda itu tipe KeyUtility (bukan password)
+                    // Logic Hapus Kunci setelah dipakai
                     if (wasLocked && !util.isLocked() && util instanceof com.tubes.pbo.models.KeyUtility) {
-                        tas.removeItem(codeOrKey); // Hapus kunci dari Inventory
+                        tas.removeItem(codeOrKey);
                         lastOutput += "\n(Item [" + codeOrKey + "] telah digunakan dan dibuang)";
                     }
 
-                    // Logic Loot Drop
-                    Item loot = util.lootItem();
-                    if (loot != null) {
-                        currentRoom.addItem(loot);
-                        lastOutput += "\n[!] Sebuah " + loot.getName() + " terjatuh keluar!";
+                    // CEK ENDING (Pintu Keluar)
+                    if (util instanceof com.tubes.pbo.models.ExitDoor && !util.isLocked()) {
+                        ConsoleUI.render(currentRoom, tas, lastOutput);
+                        System.out.println("\nPress Enter to exit...");
+                        scanner.nextLine();
+                        isRunning = false;
+                        return;
                     }
+
+                    // --- PERUBAHAN DI SINI ---
+                    // Item TIDAK dijatuhkan ke ruangan (currentRoom.addItem dihapus).
+                    // Cukup beri info ke pemain.
+                    // TAMBAHKAN SYARAT: !util.isLocked()
+                    // Artinya: Hanya tampilkan isi jika benda TIDAK TERKUNCI (Berhasil dibuka)
+                    if (!util.isLocked() && util.peekItem() != null) {
+                        lastOutput += "\nKamu melihat [" + util.peekItem().getName() + "] di dalamnya.";
+                    }
+
                 } else {
                     lastOutput = "Tidak ada benda bernama '" + utilityName + "' di sini.";
                 }
+            }
+        }
+
+        // --- AMBIL LOGIC (REVISI: BISA AMBIL DARI CONTAINER) ---
+        else if (input.startsWith("ambil ")) {
+            String itemName = input.substring(6).trim();
+            Item itemTaken = null;
+
+            // 1. Cek di Lantai dulu
+            itemTaken = currentRoom.removeItem(itemName);
+
+            // 2. Jika tidak ada di lantai, Cek di Container/Utilities yang TERBUKA
+            if (itemTaken == null) {
+                for (com.tubes.pbo.models.Utilities u : currentRoom.getUtilities()) {
+                    // UBAH DI SINI: Syaratnya harus u.isOpen(), bukan !u.isLocked()
+                    // Jadi kalau statusnya UNLOCKED (seperti Jaket baru ketemu), tetap gak bisa diambil isinya.
+                    if (u.isOpen() && u.peekItem() != null && u.peekItem().getName().equalsIgnoreCase(itemName)) {
+                        itemTaken = u.lootItem();
+                        break;
+                    }
+                }
+            }
+
+            // Proses Masuk Tas
+            if (itemTaken != null) {
+                if (tas.getItems().size() < 5) {
+                    tas.addItem(itemTaken);
+                    lastOutput = "Kamu mengambil [" + itemTaken.getName() + "].";
+                } else {
+                    // Jika tas penuh, kembalikan item ke tempat asalnya (Lantai)
+                    // Note: Agak ribet balikin ke container, jadi defaultnya jatuh ke lantai aja
+                    currentRoom.addItem(itemTaken);
+                    lastOutput = "Tas penuh! Item terjatuh ke lantai.";
+                }
+            } else {
+                lastOutput = "Tidak ada benda bernama '" + itemName + "' yang bisa diambil (Coba buka dulu tempatnya?).";
             }
         }
 

@@ -38,6 +38,16 @@ public class Inventory {
         }
     }
 
+    public void removeItem(String itemName) {
+        for (Item item : items) {
+            if (item.getName().equalsIgnoreCase(itemName)) {
+                items.remove(item);
+                System.out.println(item.getName() + " dihapus dari tas.");
+                return;
+            }
+        }
+    }
+
     public void showInventory() {
         System.out.println("=== ISI TAS ===");
         if (items.isEmpty()) {

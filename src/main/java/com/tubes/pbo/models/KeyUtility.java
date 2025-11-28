@@ -1,7 +1,7 @@
 package com.tubes.pbo.models;
 
 public class KeyUtility extends Utilities {
-    private String requiredKeyName;
+    String requiredKeyName;
 
     public KeyUtility(String name, String desc, Item loot, String keyName) {
         super(name, desc, loot);

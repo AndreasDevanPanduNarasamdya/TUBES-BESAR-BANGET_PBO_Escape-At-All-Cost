@@ -1,48 +1,67 @@
 package com.tubes.pbo.world;
 
 import com.tubes.pbo.models.Item;
+import com.tubes.pbo.models.ExitDoor;
+import com.tubes.pbo.models.OpenableUtility;
 import com.tubes.pbo.models.PasswordUtility;
 
 public class WorldBuilder {
 
-    // Method ini mengembalikan Room awal (Starting Room)
     public Room buildWorld() {
-        // --- 1. MEMBUAT OBJEK RUANGAN (LINEAR MAP) ---
-        // Urutan: [KAMAR TIDUR] <-> [RUANG TAMU] <-> [DAPUR]
-
+        // --- 1. MEMBUAT RUANGAN ---
         Room bedroom = new Room("Kamar Tidur", "Tempat istirahat. Ada kasur berantakan.");
         Room livingRoom = new Room("Ruang Tamu", "Pusat rumah. Ada TV dan Sofa.");
         Room kitchen = new Room("Dapur", "Area memasak. Bau gas bocor.");
+        Room storageRoom = new Room("Gudang", "Ruangan pengap penuh debu dan sarang laba-laba."); // Ruangan Baru
 
-        // --- 2. SETUP ITEMS & UTILITIES ---
-        Item pedangNaga = new Item("Pedang Naga", "Pedang legendaris!");
+        // --- 2. MEMBUAT ITEM ---
+        Item kertasKode = new Item("Kertas", "Secarik kertas bertuliskan: 1234");
+        Item baterai = new Item("Baterai", "Baterai AA tipe Alkaline.");
+        Item senter = new Item("Senter", "Senter LED terang (Butuh baterai?).");
+        Item jeruk = new Item("Jeruk", "Buah jeruk segar.");
+        Item sekrup = new Item("Sekrup", "Sekrup kecil berkarat.");
+        Item theonepiece = new Item("Theonepiece", "The One Piece is Real.");
+        Item kunci = new Item("Kunci", "Kunci besi berkarat. Sepertinya penting.");
 
-        // Isi Kamar Tidur (Paling Kiri)
-        bedroom.addItem(new Item("Kunci", "Kunci perak kecil."));
-        bedroom.addItem(new Item("Catatan", "Kertas bertuliskan: PIN BRANKAS ADALAH 1234"));
+        ExitDoor pintuKeluar = new ExitDoor("Exit", "Pintu besi berat berkarat.", "Kunci");
 
-        // Isi Ruang Tamu (Tengah)
-        livingRoom.addItem(new Item("Senter", "Senter kecil."));
-        PasswordUtility brankas = new PasswordUtility("Brankas Besi", "Butuh 4 digit PIN", pedangNaga, "1234");
-        livingRoom.addUtility(brankas);
 
-        // Isi Dapur (Paling Kanan)
-        kitchen.addItem(new Item("Pisau", "Pisau dapur tumpul."));
+        // --- 3. ISI KAMAR TIDUR ---
+        // Jaket (Utility Biasa) -> Isi Kertas
+        OpenableUtility jaket = new OpenableUtility("Jaket", "Jaket kulit tergantung.", kertasKode);
+        bedroom.addUtility(jaket);
 
-        // --- 3. MENGHUBUNGKAN RUANGAN (LEFT / RIGHT ONLY) ---
+        // Lemari/Closet (Utility Biasa) -> Isi Baterai
+        OpenableUtility closet = new OpenableUtility("Lemari", "Lemari pakaian kayu.", baterai);
+        bedroom.addUtility(closet);
 
-        // Kamar Tidur (Hanya bisa ke Kanan -> Ruang Tamu)
+
+        // --- 4. ISI RUANG TAMU ---
+        // UBAH BARIS INI (Hapus kata " Besi")
+        PasswordUtility brankas = new PasswordUtility("Brankas", "Butuh 4 digit PIN", theonepiece, "1234");
+        storageRoom.addUtility(brankas);
+
+        storageRoom.addUtility(pintuKeluar);
+
+        // --- 5. ISI DAPUR ---
+        // Kulkas (Utility Biasa) -> Isi Jeruk
+        OpenableUtility kulkas = new OpenableUtility("Kulkas", "Kulkas 1 pintu.", kunci);
+        kitchen.addUtility(kulkas);
+
+        // Kabinet (Utility Biasa) -> Isi Sekrup
+        OpenableUtility cabinet = new OpenableUtility("Kabinet", "Laci penyimpanan alat dapur.", sekrup);
+        kitchen.addUtility(cabinet);
+
+        // Kitchen <-> Storage (NEW CONNECTION)
+        kitchen.setExit("right", storageRoom);
+        storageRoom.setExit("left", kitchen);
+
+        // --- 6. HUBUNGKAN RUANGAN ---
         bedroom.setExit("right", livingRoom);
-
-        // Ruang Tamu (Kiri -> Kamar, Kanan -> Dapur)
         livingRoom.setExit("left", bedroom);
         livingRoom.setExit("right", kitchen);
-
-        // Dapur (Hanya bisa ke Kiri -> Ruang Tamu)
         kitchen.setExit("left", livingRoom);
 
-        // --- 4. RETURN STARTING ROOM ---
-        // Kita mulai di Kamar Tidur (Ujung Kiri) sesuai tema "Bangun Tidur"
         return bedroom;
     }
 }

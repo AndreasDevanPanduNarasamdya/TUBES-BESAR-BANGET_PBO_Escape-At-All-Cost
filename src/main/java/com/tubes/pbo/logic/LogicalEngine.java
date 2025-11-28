@@ -46,51 +46,85 @@ public class LogicalEngine {
             System.out.println("Keluar dari game...");
         }
 
-        // --- GO LOGIC (SIDE SCROLLING) ---
+        // --- GO LOGIC ---
         else if (input.startsWith("go ")) {
-            String direction = input.substring(3);
-
-            // Validasi arah hanya left/right agar sesuai UI
+            String direction = input.substring(3).trim(); // Tambah trim() biar aman
             if (!direction.equals("left") && !direction.equals("right")) {
-                lastOutput = "Game ini side-scrolling. Gunakan 'go left' atau 'go right'.";
+                lastOutput = "Gunakan 'go left' atau 'go right'.";
             } else {
                 Room nextRoom = currentRoom.getExit(direction);
                 if (nextRoom != null) {
                     currentRoom = nextRoom;
-                    lastOutput = "Kamu berjalan ke " + direction + "...";
+                    lastOutput = "Berjalan ke " + direction + "...";
                 } else {
-                    lastOutput = "Dug! Tembok buntu. Tidak ada jalan ke " + direction + ".";
+                    lastOutput = "Buntu.";
                 }
             }
         }
 
-        // --- BUKA/SOLVE LOGIC ---
+        // --- BUKA LOGIC (UPDATE: HAPUS KUNCI SETELAH DIPAKAI) ---
         else if (input.startsWith("buka ")) {
-            String[] parts = input.split(" ", 3);
-            if (parts.length < 3) {
-                lastOutput = "Format salah! Gunakan: buka [nama_benda] [password/kunci]";
+            String[] parts = input.split(" ");
+            if (parts.length < 2) {
+                lastOutput = "Format: 'buka [benda]' atau 'buka [benda] [kunci/password]'";
             } else {
                 String utilityName = parts[1];
-                String codeOrKey = parts[2];
+                String codeOrKey = (parts.length > 2) ? parts[2] : "";
 
-                Utilities util = currentRoom.getUtility(utilityName);
+                com.tubes.pbo.models.Utilities util = currentRoom.getUtility(utilityName);
 
                 if (util != null) {
+                    // Cek status terkunci SEBELUM mencoba membuka
+                    boolean wasLocked = util.isLocked();
+
+                    // --- VALIDASI KEY UTILITY ---
+                    if (util instanceof com.tubes.pbo.models.KeyUtility) {
+                        if (codeOrKey.isEmpty()) {
+                            lastOutput = "Terkunci! Gunakan: buka " + utilityName + " [nama_kunci]";
+                            return;
+                        }
+
+                        // Cek keberadaan item di tas
+                        boolean hasItem = false;
+                        for (Item i : tas.getItems()) {
+                            if (i.getName().equalsIgnoreCase(codeOrKey)) {
+                                hasItem = true;
+                                break;
+                            }
+                        }
+                        if (!hasItem) {
+                            lastOutput = "Kamu tidak punya barang bernama '" + codeOrKey + "'!";
+                            return;
+                        }
+                    }
+                    // ----------------------------
+
+                    // Coba buka (Solve)
                     lastOutput = util.solve(codeOrKey);
+
+                    // --- LOGIC HAPUS KUNCI ---
+                    // Jika tadi terkunci, dan sekarang sudah TIDAK terkunci (berarti sukses dibuka)
+                    // DAN benda itu tipe KeyUtility (bukan password)
+                    if (wasLocked && !util.isLocked() && util instanceof com.tubes.pbo.models.KeyUtility) {
+                        tas.removeItem(codeOrKey); // Hapus kunci dari Inventory
+                        lastOutput += "\n(Item [" + codeOrKey + "] telah digunakan dan dibuang)";
+                    }
+
+                    // Logic Loot Drop
                     Item loot = util.lootItem();
                     if (loot != null) {
-                        tas.addItem(loot);
-                        lastOutput += "\nKamu mendapatkan: " + loot.getName();
+                        currentRoom.addItem(loot);
+                        lastOutput += "\n[!] Sebuah " + loot.getName() + " terjatuh keluar!";
                     }
                 } else {
-                    lastOutput = "Tidak ada benda bernama " + utilityName + " di sini.";
+                    lastOutput = "Tidak ada benda bernama '" + utilityName + "' di sini.";
                 }
             }
         }
 
         // --- AMBIL LOGIC ---
         else if (input.startsWith("ambil ")) {
-            String itemName = input.substring(6);
+            String itemName = input.substring(6).trim(); // Tambah trim()
             Item itemTaken = currentRoom.removeItem(itemName);
 
             if (itemTaken != null) {
@@ -99,35 +133,41 @@ public class LogicalEngine {
                     lastOutput = "Kamu mengambil [" + itemTaken.getName() + "].";
                 } else {
                     currentRoom.addItem(itemTaken);
-                    lastOutput = "Tas penuh! Tidak bisa mengambil " + itemTaken.getName();
+                    lastOutput = "Tas penuh!";
                 }
             } else {
-                lastOutput = "Tidak ada benda bernama '" + itemName + "' di sini.";
+                lastOutput = "Tidak ada '" + itemName + "' di sini.";
             }
         }
 
-        // --- CEK LOGIC ---
-        else if (input.startsWith("cek ")) {
-            String itemName = input.substring(4);
-            boolean found = false;
+        // --- CEK LOGIC (DIPERBAIKI) ---
+        else if (input.startsWith("cek")) { // Cek startsWith tanpa spasi dulu
+            // Handle jika user cuma ketik "cek" doang
+            if (input.length() <= 3) {
+                lastOutput = "Mau cek apa? Ketik 'cek [nama_item]'.";
+            } else {
+                String itemName = input.substring(3).trim(); // Ambil nama & buang spasi
+                boolean found = false;
 
-            for (Item i : tas.getItems()) {
-                if (i.getName().equalsIgnoreCase(itemName)) {
-                    lastOutput = "Info [" + i.getName() + "]: " + i.getDescription();
-                    found = true;
-                    break;
+                // Cari di tas
+                for (Item i : tas.getItems()) {
+                    if (i.getName().equalsIgnoreCase(itemName)) {
+                        lastOutput = "Info [" + i.getName() + "]: " + i.getDescription();
+                        found = true;
+                        break;
+                    }
                 }
-            }
-            if (!found) {
-                lastOutput = "Barang harus ada di tas untuk diperiksa.";
+                if (!found) {
+                    lastOutput = "Barang '" + itemName + "' tidak ada di TAS kamu.";
+                }
             }
         }
 
         // --- HELP LOGIC ---
         else if (input.equals("help")) {
-            lastOutput = "Perintah: go [left/right], ambil [item], cek [item], buka [benda] [kode], exit";
+            lastOutput = "Perintah: go [left/right], ambil [item], cek [item], buka [benda], exit";
         } else {
-            lastOutput = "Maaf, saya tidak mengerti perintah '" + input + "'.";
+            lastOutput = "Perintah tidak dikenal.";
         }
     }
 }

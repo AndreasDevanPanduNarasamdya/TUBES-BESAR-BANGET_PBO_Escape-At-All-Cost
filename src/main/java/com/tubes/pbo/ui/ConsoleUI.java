@@ -124,6 +124,9 @@ public class ConsoleUI {
         } else if (name.contains("dapur") || name.contains("kitchen")) {
             art = getKitchenArt();
         }
+        else if (name.contains("gudang") || name.contains("storage")) { // TAMBAHAN
+            art = getStorageArt();
+        }
 
         for (String line : art) {
             System.out.printf("║ %-76s ║\n", line);
@@ -188,6 +191,23 @@ public class ConsoleUI {
                 "||                                                                          ||",
                 "||                                                                          ||",
                 "||                   ( RUANGAN INI GELAP DAN KOSONG )                       ||",
+                "||                                                                          ||",
+                "||__________________________________________________________________________||",
+                "||//////////////////////////////////////////////////////////////////////////||"
+        };
+    }
+    private static String[] getStorageArt() {
+        return new String[]{
+                "||==========================================================================||",
+                "||                                                                          ||",
+                "||                      _ __________ _                                      ||",
+                "||                     | |          | |                                     ||",
+                "||                     | |  PINTU   | |                                     ||",
+                "||      ( BRANKAS )    | |  KELUAR  | |                                     ||",
+                "||       | [###] |     | |          | |                                     ||",
+                "||       |_______|     |_|____o_____|_|                                     ||",
+                "||                                                                          ||",
+                "||      (GUDANG)                                                            ||",
                 "||                                                                          ||",
                 "||__________________________________________________________________________||",
                 "||//////////////////////////////////////////////////////////////////////////||"

@@ -8,6 +8,7 @@ public class Main {
         // 1. Lakukan Setup Dunia menggunakan Builder
         WorldBuilder builder = new WorldBuilder();
         Room startRoom = builder.buildWorld();
+        Room level2Room = builder.buildWorld2();
 
         // 2. Oper data ruangan awal ke Engine (Dependency Injection)
         LogicalEngine game = new LogicalEngine(startRoom);

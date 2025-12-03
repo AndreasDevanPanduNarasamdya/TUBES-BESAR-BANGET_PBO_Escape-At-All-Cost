@@ -18,4 +18,8 @@ public class UtilityFactory {
     public static Utilities createExit(String name, String desc, String keyName) {
         return new ExitDoor(name, desc, keyName);
     }
+    // Import BreakableUtility first if not auto-imported
+    public static Utilities createBreakable(String name, String desc, Item loot, String toolNeeded) {
+    return new BreakableUtility(name, desc, loot, toolNeeded);
+}
 }

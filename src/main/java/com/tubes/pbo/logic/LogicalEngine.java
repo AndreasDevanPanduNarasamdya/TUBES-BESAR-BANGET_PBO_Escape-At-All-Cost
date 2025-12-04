@@ -15,6 +15,19 @@ public class LogicalEngine {
     private boolean isRunning;
     private String lastOutput;
     private Scanner scanner;
+    private boolean isWon = false; // TAMBAHAN: Status kemenangan
+
+    // ... Constructor & initCommands ...
+
+    // UPDATE: Method untuk menghentikan game karena MENANG
+    public void setGameWon() {
+        this.isWon = true;
+        this.isRunning = false;
+    }
+
+    public boolean isWon() {
+        return isWon;
+    }
 
     // NEW: Map to store commands
     private Map<String, Command> commandMap;

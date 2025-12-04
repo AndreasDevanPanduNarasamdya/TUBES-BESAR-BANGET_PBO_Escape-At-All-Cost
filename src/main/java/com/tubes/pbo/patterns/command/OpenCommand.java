@@ -47,10 +47,9 @@ public class OpenCommand implements Command {
 
             // Win Condition
             if (util instanceof ExitDoor && !util.isLocked()) {
-                engine.appendOutput("\n\nTEKAN ENTER UNTUK KELUAR...");
-                // In a real CLI, we might wait for input, but here we just stop the engine loop
-                // You might need a way to pause, but stopping is enough for logic.
-                engine.stopGame();
+                engine.appendOutput("\n\nTEKAN ENTER UNTUK LANJUT...");
+                // PANGGIL METHOD BARU
+                engine.setGameWon();
                 return;
             }
 

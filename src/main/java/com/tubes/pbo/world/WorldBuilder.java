@@ -56,5 +56,14 @@ public class WorldBuilder {
 
         return bedroom;
     }
+    // ... method buildWorld() Level 1 ...
+
+    // --- TEMPLATE LEVEL 2 ---
+    public Room buildLevel2() {
+        // 1. Buat Ruangan Baru (Suasana Beda)d
+        Room dungeon = new Room("Bawah Tanah", "Gelap, lembab, dan berbau lumut.");
+
+        return dungeon; // Mulai di Bawah Tanah
+    }
 }
 

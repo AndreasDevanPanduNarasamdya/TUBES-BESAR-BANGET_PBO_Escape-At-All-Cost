@@ -1,5 +1,7 @@
 package com.tubes.pbo.models;
 
+import com.tubes.pbo.patterns.state.UtilityState;
+
 public class OpenableUtility extends Utilities {
 
     public OpenableUtility(String name, String desc, Item loot) {

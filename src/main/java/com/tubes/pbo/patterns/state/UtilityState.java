@@ -1,4 +1,4 @@
-package com.tubes.pbo.models;
+package com.tubes.pbo.patterns.state;
 
 public enum UtilityState {
     LOCKED,     // Terkunci (Butuh password/kunci)

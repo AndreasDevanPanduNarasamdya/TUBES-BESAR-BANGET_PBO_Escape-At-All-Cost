@@ -1,5 +1,7 @@
 package com.tubes.pbo.models;
 
+import com.tubes.pbo.patterns.state.UtilityState;
+
 public class BreakableUtility extends Utilities {
     private String requiredToolName; // Nama alat yang dibutuhkan, misal "Palu"
 

@@ -133,6 +133,23 @@ public class ConsoleUI {
         }
     }
 
+    public static void printTitleScreen() {
+        clearScreen();
+        printBorderTop();
+        System.out.printf("║ %-76s ║\n", " ");
+        System.out.printf("║   %-73s ║\n", "E S C A P E   A T   A L L   C O S T");
+        System.out.printf("║ %-76s ║\n", " ");
+        System.out.printf("║   %-73s ║\n", "[ A Text-Based Horror Adventure ]");
+        System.out.printf("║ %-76s ║\n", " ");
+        printLine();
+        System.out.printf("║ %-76s ║\n", " ");
+        System.out.printf("║       [1] START GAME                                                       ║\n");
+        System.out.printf("║       [2] EXIT                                                             ║\n");
+        System.out.printf("║ %-76s ║\n", " ");
+        printBorderBottom();
+        System.out.print("   MENU > ");
+    }
+
     // --- ART ASSETS ---
     private static String[] getBedroomArt() {
         return new String[]{

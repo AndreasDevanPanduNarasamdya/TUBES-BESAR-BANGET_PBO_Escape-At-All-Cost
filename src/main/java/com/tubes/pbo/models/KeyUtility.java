@@ -1,5 +1,7 @@
 package com.tubes.pbo.models;
 
+import com.tubes.pbo.patterns.state.UtilityState;
+
 public class KeyUtility extends Utilities {
     String requiredKeyName;
 

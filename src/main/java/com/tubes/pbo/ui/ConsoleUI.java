@@ -51,7 +51,7 @@ public class ConsoleUI {
         // 1. COMMAND LIST (DIKEMBALIKAN KE PALING ATAS)
         System.out.printf("║ BANTUAN: %-65s ║\n", " ");
         System.out.printf("║ [GO <left/right>] [AMBIL <item>] [CEK <item>] [BUKA <benda> <kunci>]   ║\n");
-        System.out.printf("║ [TAS]             [HELP]         [EXIT]                                ║\n");
+        System.out.printf("║ [TAS]             [HELP]         [EXIT]   [HANCURKAN <benda> <alat>]   ║\n");
         printLine();
 
         // 2. HEADER INFO (HAPUS TIMER/MOOD -> GANTI JADI FULL INVENTORY LIST)
@@ -137,17 +137,42 @@ public class ConsoleUI {
         clearScreen();
         printBorderTop();
         System.out.printf("║ %-76s ║\n", " ");
-        System.out.printf("║   %-73s ║\n", "E S C A P E   A T   A L L   C O S T");
+        System.out.printf("║   ███████╗███████╗ ██████╗ █████╗ ██████╗ ███████╗                        ║\n");
+        System.out.printf("║   ██╔════╝██╔════╝██╔════╝██╔══██╗██╔══██╗██╔════╝                        ║\n");
+        System.out.printf("║   █████╗  ███████╗██║     ███████║██████╔╝█████╗                          ║\n");
+        System.out.printf("║   ██╔══╝  ╚════██║██║     ██╔══██║██╔═══╝ ██╔══╝                          ║\n");
+        System.out.printf("║   ███████╗███████║╚██████╗██║  ██║██║     ███████╗                        ║\n");
+        System.out.printf("║   ╚══════╝╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝     ╚══════╝                        ║\n");
         System.out.printf("║ %-76s ║\n", " ");
-        System.out.printf("║   %-73s ║\n", "[ A Text-Based Horror Adventure ]");
+        System.out.printf("║        █████╗ ████████╗     █████╗ ██╗     ██╗                            ║\n");
+        System.out.printf("║       ██╔══██╗╚══██╔══╝    ██╔══██╗██║     ██║                            ║\n");
+        System.out.printf("║       ███████║   ██║       ███████║██║     ██║                            ║\n");
+        System.out.printf("║       ██╔══██║   ██║       ██╔══██║██║     ██║                            ║\n");
+        System.out.printf("║       ██║  ██║   ██║       ██║  ██║███████╗███████╗                       ║\n");
+        System.out.printf("║       ╚═╝  ╚═╝   ╚═╝       ╚═╝  ╚═╝╚══════╝╚══════╝                       ║\n");
+        System.out.printf("║ %-76s ║\n", " ");
+        System.out.printf("║     ██████╗ ██████╗ ███████╗████████╗                                     ║\n");
+        System.out.printf("║    ██╔════╝██╔═══██╗██╔════╝╚══██╔══╝                                     ║\n");
+        System.out.printf("║    ██║     ██║   ██║███████╗   ██║                                        ║\n");
+        System.out.printf("║    ██║     ██║   ██║╚════██║   ██║                                        ║\n");
+        System.out.printf("║    ╚██████╗╚██████╔╝███████║   ██║                                        ║\n");
+        System.out.printf("║     ╚═════╝ ╚═════╝ ╚══════╝   ╚═╝                                        ║\n");
         System.out.printf("║ %-76s ║\n", " ");
         printLine();
         System.out.printf("║ %-76s ║\n", " ");
-        System.out.printf("║       [1] START GAME                                                       ║\n");
-        System.out.printf("║       [2] EXIT                                                             ║\n");
+        System.out.printf("║                  「 A Text-Based Horror Adventure 」                       ║\n");
+        System.out.printf("║ %-76s ║\n", " ");
+        printLine();
+        System.out.printf("║ %-76s ║\n", " ");
+        System.out.printf("║           ┌──────────────────────────────────────────┐                     ║\n");
+        System.out.printf("║           │  [1] ► START GAME                        │                     ║\n");
+        System.out.printf("║           │                                          │                     ║\n");
+        System.out.printf("║           │  [2] ► EXIT                              │                     ║\n");
+        System.out.printf("║           └──────────────────────────────────────────┘                     ║\n");
+        System.out.printf("║                                                                            ║\n");
         System.out.printf("║ %-76s ║\n", " ");
         printBorderBottom();
-        System.out.print("   MENU > ");
+        System.out.print("\n   「 MENU 」 ► ");
     }
 
     // --- ART ASSETS ---
@@ -192,11 +217,11 @@ public class ConsoleUI {
                 "||      \\___/               [ KABINET DAPUR ]                               ||",
                 "||                          |===============|                               ||",
                 "||                          | | | | | | | | |                               ||",
-                "||                          |===============|             [ KULKAS ]        ||",
+                "||                          |===============|             [  Vas  ]        ||",
                 "||                                                        |========|        ||",
-                "||      [ KOMPOR ]             [ WASTAFEL ]               |        |        ||",
-                "||      | o  o   |             |   ____   |               |   __   |        ||",
-                "||      |________|             |__|    |__|               |__|__|__|        ||",
+                "||      [ KOMPOR ]             [ WASTAFEL ]                |      |         ||",
+                "||      | o  o   |             |   ____   |                 | __ |        ||",
+                "||      |________|             |__|    |__|                  |__|        ||",
                 "||__________________________________________________________________________||",
                 "||//////////////////////////////////////////////////////////////////////////||"
         };
@@ -230,4 +255,5 @@ public class ConsoleUI {
                 "||//////////////////////////////////////////////////////////////////////////||"
         };
     }
+
 }

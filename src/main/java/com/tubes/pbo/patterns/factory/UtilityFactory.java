@@ -21,5 +21,5 @@ public class UtilityFactory {
     // Import BreakableUtility first if not auto-imported
     public static Utilities createBreakable(String name, String desc, Item loot, String toolNeeded) {
     return new BreakableUtility(name, desc, loot, toolNeeded);
-}
+    }
 }

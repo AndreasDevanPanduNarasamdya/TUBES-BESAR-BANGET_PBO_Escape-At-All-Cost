@@ -44,10 +44,10 @@ public class Main {
             System.out.println("Memulai Level 2...");
             try { Thread.sleep(2000); } catch (Exception e) {} // Jeda biar dramatis
 
-            Room level2 = builder.buildLevel2();
-            // Buat engine baru untuk Level 2 (Inventory tetap sama karena Singleton)
-            game = new LogicalEngine(level2);
-            game.start();
+//            Room level2 = builder.buildLevel2();
+//            // Buat engine baru untuk Level 2 (Inventory tetap sama karena Singleton)
+//            game = new LogicalEngine(level2);
+//            game.start();
 
             if (game.isWon()) {
                 System.out.println("\n\n=== CONGRATULATIONS! ALL LEVELS COMPLETED ===");

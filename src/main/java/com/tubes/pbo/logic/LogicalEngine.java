@@ -53,7 +53,7 @@ public class LogicalEngine {
         commandMap.put("help", new HelpCommand());
         commandMap.put("exit", new ExitCommand());
         commandMap.put("hancurkan", new SmashCommand());
-        // commandMap.put("gabung", new CombineCommand());
+        commandMap.put("gabung", new CombineCommand());
     }
 
     public void start() {

@@ -38,19 +38,29 @@ public class Main {
 
         // Cek apakah stop karena MENANG atau EXIT manual?
         if (game.isWon()) {
-            // --- LEVEL 2 ---
+// --- LEVEL 2 START ---
+            ConsoleUI.clearScreen();
             System.out.println("\n\n=== LEVEL 1 CLEARED! ===");
-            System.out.println("Kamu berhasil keluar rumah, tapi terjatuh ke lubang...");
-            System.out.println("Memulai Level 2...");
-            try { Thread.sleep(2000); } catch (Exception e) {} // Jeda biar dramatis
+            System.out.println("Kamu membuka pintu keluar dan berlari sekuat tenaga...");
+            System.out.println("Tiba-tiba... BUGH! Seseorang memukul kepalamu dari belakang.");
+            System.out.println("Pandanganmu gelap.");
 
-//            Room level2 = builder.buildLevel2();
-//            // Buat engine baru untuk Level 2 (Inventory tetap sama karena Singleton)
-//            game = new LogicalEngine(level2);
-//            game.start();
+            try { Thread.sleep(4000); } catch (Exception e) {}
+
+            System.out.println("\n... Kamu terbangun di tempat yang dingin ...");
+            System.out.println("... LEVEL 2: THE DUNGEON ...");
+            try { Thread.sleep(2000); } catch (Exception e) {}
+
+            // Initialize Level 2
+            Room level2 = builder.buildLevel2();
+
+            // Re-initialize engine with new room (Inventory keeps items from Level 1,
+            // if you want to clear inventory, call Inventory.getInstance().clear() if you implement it)
+            game = new LogicalEngine(level2);
+            game.start();
 
             if (game.isWon()) {
-                System.out.println("\n\n=== CONGRATULATIONS! ALL LEVELS COMPLETED ===");
+                ConsoleUI.printWinScreen();
                 System.out.println("Tekan Enter untuk kembali ke menu...");
                 new Scanner(System.in).nextLine();
             }

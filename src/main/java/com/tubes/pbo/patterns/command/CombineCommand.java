@@ -17,7 +17,7 @@ public class CombineCommand implements Command {
         String name2 = args[2];
         Inventory tas = engine.getTas();
 
-        // Cek keberadaan item
+        // 1. Cek apakah player punya kedua barang tersebut
         boolean hasItem1 = tas.getItems().stream().anyMatch(i -> i.getName().equalsIgnoreCase(name1));
         boolean hasItem2 = tas.getItems().stream().anyMatch(i -> i.getName().equalsIgnoreCase(name2));
 
@@ -26,21 +26,30 @@ public class CombineCommand implements Command {
             return;
         }
 
-        // --- RESEP CRAFTING (Hardcoded Logic) ---
-        // Contoh: Senter + Baterai = SenterNyala
+        // --- LOGIC KOMBINASI (Di sini kita atur resepnya) ---
+
+        // RESEP 1: Senter + Baterai = SenterNyala
         if ((name1.equalsIgnoreCase("Senter") && name2.equalsIgnoreCase("Baterai")) ||
-            (name1.equalsIgnoreCase("Baterai") && name2.equalsIgnoreCase("Senter"))) {
-            
-            // Hapus bahan lama
+                (name1.equalsIgnoreCase("Baterai") && name2.equalsIgnoreCase("Senter"))) {
+
+            tas.removeItem(name1);
+            tas.removeItem(name2);
+            tas.addItem(new Item("SenterNyala", "Senter yang menyala terang."));
+            engine.setLastOutput("KLIK! Kamu memasang baterai ke senter. Sekarang menyala!");
+        }
+        // RESEP 2: BalokKayu + BalokBesi = Palu (INI YANG BARU)
+        else if ((name1.equalsIgnoreCase("BalokKayu") && name2.equalsIgnoreCase("BalokBesi")) ||
+                (name1.equalsIgnoreCase("BalokBesi") && name2.equalsIgnoreCase("BalokKayu"))) {
+
             tas.removeItem(name1);
             tas.removeItem(name2);
 
-            // Tambah item baru
-            Item senterNyala = new Item("SenterNyala", "Senter yang menyala terang. Bisa dipakai di tempat gelap.");
-            tas.addItem(senterNyala);
+            // Hadiahnya adalah item "Palu"
+            tas.addItem(new Item("Palu", "Palu godam rakitan. Sangat berat dan kuat."));
 
-            engine.setLastOutput("KLIK! Kamu memasang baterai ke senter. Sekarang senternya menyala!");
-        } 
+            engine.setLastOutput("DUENG! Kamu mengikat besi ke kayu dengan kuat. Jadilah PALU!");
+        }
+        // Jika tidak ada resep yang cocok
         else {
             engine.setLastOutput("Kedua benda itu tidak bisa digabungkan.");
         }

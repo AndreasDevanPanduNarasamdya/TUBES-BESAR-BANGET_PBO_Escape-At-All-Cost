@@ -23,6 +23,8 @@ public class WorldBuilder {
         Item palu = new Item("Palu", "Palu besi yang kuat.");
         //Item senter = new Item("Senter", "Senter LED terang (Butuh baterai?).");
         //Item jeruk = new Item("Jeruk", "Buah jeruk segar.");
+        Item kayu = new Item("BalokKayu", "Potongan kayu sisa bangunan.");
+        Item besi = new Item("BalokBesi", "Potongan besi tua yang berat.");
         Item sekrup = new Item("Sekrup", "Sekrup kecil berkarat.");
         Item theonepiece = new Item("Theonepiece", "The One Piece is Real.");
         Item kunci = new Item("Kunci", "Kunci besi berkarat. Sepertinya penting.");
@@ -30,7 +32,7 @@ public class WorldBuilder {
 //        Utilities jaket = UtilityFactory.createContainer("Jaket", "Jaket kulit tergantung.", );
 //        bedroom.addUtility(jaket);
 
-        Utilities closet = UtilityFactory.createContainer("Lemari", "Lemari pakaian kayu.", palu);
+        Utilities closet = UtilityFactory.createContainer("Lemari", "Lemari pakaian kayu.", balokkayu);
         bedroom.addUtility(closet);
 
         Utilities vas = UtilityFactory.createBreakable("Vas", "Terdapat benda sus didalam.", kertasKode, "Palu");
@@ -45,7 +47,7 @@ public class WorldBuilder {
 //        Utilities kulkas = UtilityFactory.createContainer("Kulkas", "Kulkas 1 pintu.", kunci);
 //        kitchen.addUtility(kulkas);
 
-        Utilities cabinet = UtilityFactory.createContainer("Kabinet", "Laci penyimpanan.", sekrup);
+        Utilities cabinet = UtilityFactory.createContainer("Kabinet", "Laci penyimpanan.", balokbesi);
         kitchen.addUtility(cabinet);
 
         bedroom.setExit("right", livingRoom);
@@ -58,78 +60,79 @@ public class WorldBuilder {
         return bedroom;
     }
 
-//    public Room buildLevel2() {
-//        // --- 1. SETUP RUANGAN (DUNGEON MAP) ---
-//        Room cell = new Room("Sel Penjara", "Tempatmu dikurung. Dingin dan lembab.");
-//        Room hallway = new Room("Lorong Bawah Tanah", "Lorong gelap dengan obor redup di dinding.");
-//        Room guardRoom = new Room("Pos Penjaga", "Meja berantakan bekas penjaga main kartu.");
-//        Room Dungeonstorage = new Room("Logistik", "Tumpukan barang bekas dan debu tebal.");
-//        Room exitGate = new Room("Gerbang Utama", "Cahaya kebebasan mengintip dari celah pintu.");
-//
-//        // --- 2. SETUP ITEM ---
-//        // Item Clue
-//        Item kertasKode = new Item("Sobekan_Kertas", "Tulisan tangan jelek: 'Sandi Brankas: 5555'");
-//
-//        // Item Alat (Reward dari Brankas)
-//        Item palu = new Item("Palu_Godam", "Palu besar untuk menghancurkan benda keras.");
-//
-//        // Item Kunci (Reward dari menghancurkan benda)
-//        Item kunciUtama = new Item("Kunci_Gerbang", "Kunci besi besar berkarat.");
-//
-//        // --- 3. ISI SEL PENJARA (START) ---
-//        // Clue ditaruh di sini agar pemain harus 'cek' lingkungan awal
-//        // Kita taruh di lantai saja biar mudah, atau di dalam kasur (Container biasa)
-//        Utilities kasur = UtilityFactory.createContainer("Kasur_Jerami", "Tumpukan jerami bau apek.", kertasKode);
-//        cell.addUtility(kasur);
-//
-//        // --- 4. ISI POS PENJAGA ---
-//        // Ada Brankas yang butuh kode dari kertas tadi.
-//        // Hadiahnya adalah PALU.
-//        Utilities brankas = UtilityFactory.createSafe("Brankas_Besi", "Kotak penyimpanan senjata.", palu, "5555");
-//        guardRoom.addUtility(brankas);
-//
-//        // --- 5. ISI GUDANG LOGISTIK ---
-//        // Ada Gentong Besar yang mencurigakan. Harus dihancurkan pakai PALU.
-//        // Hadiahnya adalah KUNCI UTAMA.
-//        Utilities gentong = UtilityFactory.createBreakable("Gentong", "Gentong tanah liat retak.", kunciUtama, "Palu_Godam");
-//        Dungeonstorage.addUtility(gentong);
-//
-//        // --- 6. ISI GERBANG UTAMA ---
-//        // Pintu Exit. Butuh KUNCI UTAMA.
-//        Utilities pintuKeluar = UtilityFactory.createExit("Pintu_Besi", "Pintu keluar yang kokoh.", "Kunci_Gerbang");
-//        exitGate.addUtility(pintuKeluar);
-//
-//        cell.setExit("right", hallway);
-//        hallway.setExit("left", cell);
-//
-//        // Lorong <-> Gerbang (Kanan Ujung)
-//        hallway.setExit("right", exitGate);
-//        exitGate.setExit("left", hallway);
-//
-//        // Lorong <-> Pos Penjaga (Kita pakai 'right' dari lorong seolah-olah belok,
-//        // tapi karena keterbatasan command 'left/right', kita buat ini Linear bercabang semu)
-//        // Agar simple di UI Side Scrolling:
-//        // Kita ubah susunan: [Sel] -> [Gudang] -> [Lorong] -> [Pos] -> [Gerbang]
-//        // Ini membuat player harus jalan jauh bolak balik.
-//
-//        // REVISI MAP LINEAR TAPI JAUH (HARDER NAVIGATION):
-//        // [Sel] <-> [Gudang] <-> [Lorong] <-> [Pos Penjaga] <-> [Gerbang]
-//
-//        // Reset connection
-//        cell.setExit("right", Dungeonstorage);
-//
-//        Dungeonstorage.setExit("left", cell);
-//        Dungeonstorage.setExit("right", hallway);
-//
-//        hallway.setExit("left", Dungeonstorage);
-//        hallway.setExit("right", guardRoom);
-//
-//        guardRoom.setExit("left", hallway);
-//        guardRoom.setExit("right", exitGate);
-//
-//        exitGate.setExit("left", guardRoom);
-//
-//        return cell; // Mulai di Sel
-//    }
+    public Room buildLevel2() {
+        System.out.println("Building Level 2: The Dungeon...");
+
+        // 1. CREATE ROOMS
+        Room cell = new Room("Dungeon Cell", "Dingin, lembab, dan bau busuk.");
+        Room hallway = new Room("Lorong Bawah Tanah", "Lorong gelap dengan obor redup.");
+        Room guardRoom = new Room("Pos Penjaga", "Meja berantakan bekas penjaga main kartu.");
+        Room wardenOffice = new Room("Kantor Sipir", "Ruangan mewah di tengah penjara kumuh.");
+
+        // 2. ITEMS
+        Item spoon = new Item("Sendok_Besi", "Sendok makan yang sudah diasah tajam.");
+        Item silverKey = new Item("Kunci_Perak", "Kunci kecil untuk lemari.");
+        Item paperCode = new Item("Catatan_Sipir", "Kertas bertuliskan: PASSWORD BRANKAS = 7777");
+        Item goldKey = new Item("Kunci_Emas", "Kunci besar berkilauan.");
+
+        // 3. UTILITIES & PUZZLES
+
+        // Puzzle 1: NPC (The Prisoner)
+        // Dia memberikan 'Sendok_Besi' jika diajak bicara
+        Utilities prisoner = UtilityFactory.createNPC("Tahanan_Tua",
+                "Orang tua kurus di pojok ruangan.",
+                spoon,
+                "Sstt! Jangan berisik. Aku menyembunyikan sendok ini bertahun-tahun... ambillah, gunakan untuk menggali celah di dinding itu!");
+        cell.addUtility(prisoner);
+
+        // Puzzle 2: Breakable Wall (Needs Spoon)
+        // Loot: Silver Key
+        Utilities crack = UtilityFactory.createBreakable("Celah_Dinding",
+                "Ada batu bata yang longgar di dinding.",
+                silverKey,
+                "Sendok_Besi");
+        cell.addUtility(crack);
+
+        // Puzzle 3: Locked Locker (Needs Silver Key)
+        // Loot: Paper Code
+        Utilities locker = UtilityFactory.createContainer("Loker_Senjata",
+                "Lemari besi tempat menyimpan barang sitaan.",
+                paperCode);
+        // Kita kunci manual (karena createContainer defaultnya UNLOCKED)
+        // Tapi di logic game Anda, container biasa itu 'OpenableUtility' yg tidak butuh kunci.
+        // Jika ingin butuh kunci, kita harus pakai logic 'KeyUtility' tapi yg berisi Item.
+        // Mari kita buat KeyUtility biasa yang berisi item:
+        // (Kita modifikasi sedikit cara buatnya manual karena Factory terbatas)
+        Utilities lockedLocker = new com.tubes.pbo.models.KeyUtility("Loker_Besi", "Terkunci rapat.", paperCode, "Kunci_Perak");
+        guardRoom.addUtility(lockedLocker);
+
+        // Puzzle 4: Safe (Needs Password)
+        // Loot: Gold Key (Main Exit Key)
+        Utilities safe = UtilityFactory.createSafe("Brankas_Rahasia",
+                "Brankas kokoh di balik lukisan.",
+                goldKey,
+                "7777");
+        wardenOffice.addUtility(safe);
+
+        // EXIT DOOR
+        Utilities mainGate = UtilityFactory.createExit("Gerbang_Utama",
+                "Pintu besi raksasa menuju kebebasan.",
+                "Kunci_Emas");
+        wardenOffice.addUtility(mainGate);
+
+        // 4. CONNECT ROOMS (Linear Map)
+        // [Cell] <-> [Hallway] <-> [GuardRoom] <-> [WardenOffice]
+
+        cell.setExit("right", hallway);
+        hallway.setExit("left", cell);
+
+        hallway.setExit("right", guardRoom);
+        guardRoom.setExit("left", hallway);
+
+        guardRoom.setExit("right", wardenOffice);
+        wardenOffice.setExit("left", guardRoom);
+
+        return cell; // Start position
+    }
 }
 

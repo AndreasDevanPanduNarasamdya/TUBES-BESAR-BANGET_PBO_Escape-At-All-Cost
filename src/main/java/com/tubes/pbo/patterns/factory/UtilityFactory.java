@@ -22,4 +22,8 @@ public class UtilityFactory {
     public static Utilities createBreakable(String name, String desc, Item loot, String toolNeeded) {
     return new BreakableUtility(name, desc, loot, toolNeeded);
     }
+
+    public static Utilities createNPC(String name, String desc, Item itemHeld, String dialogue) {
+        return new NPCUtility(name, desc, itemHeld, dialogue);
+    }
 }

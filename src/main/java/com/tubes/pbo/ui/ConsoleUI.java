@@ -127,7 +127,11 @@ public class ConsoleUI {
         else if (name.contains("gudang") || name.contains("storage")) { // TAMBAHAN
             art = getStorageArt();
         }
-
+        // Level 2 Checks (NEW)
+        else if (name.contains("cell") || name.contains("dungeon")) art = getDungeonCellArt();
+        else if (name.contains("lorong") || name.contains("hallway")) art = getDungeonHallArt();
+        else if (name.contains("guard") || name.contains("jaga")) art = getGuardRoomArt();
+        else if (name.contains("sipir") || name.contains("office")) art = getWardenOfficeArt();
         for (String line : art) {
             System.out.printf("║ %-76s ║\n", line);
         }
@@ -254,6 +258,100 @@ public class ConsoleUI {
                 "||__________________________________________________________________________||",
                 "||//////////////////////////////////////////////////////////////////////////||"
         };
+    }
+
+    // --- NEW ART ASSETS FOR LEVEL 2 ---
+    private static String[] getDungeonCellArt() {
+        return new String[]{
+                "||==========================================================================||",
+                "||   |||   |||                                                              ||",
+                "||   |||   |||           [ CELAH DINDING ]                                  ||",
+                "||   |||   |||             (Retak...)                                       ||",
+                "||   |||   |||              | / / |                                         ||",
+                "||                           |/ /|             ( TAHANAN TUA )              ||",
+                "||                                                 O___                     ||",
+                "||      [ JERUJI BESI ]                            /|  \\                    ||",
+                "||      || || || || ||                            / \\                       ||",
+                "||      || || || || ||                                                      ||",
+                "||__________________________________________________________________________||",
+                "||//////////////////////////////////////////////////////////////////////////||"
+        };
+    }
+
+    private static String[] getDungeonHallArt() {
+        return new String[]{
+                "||==========================================================================||",
+                "||                                                                          ||",
+                "||      ( OBOR )                                              ( OBOR )      ||",
+                "||        ) (                                                   ) (         ||",
+                "||       |___|               _  _  _  _  _  _                  |___|        ||",
+                "||        | |               | || || || || || |                  | |         ||",
+                "||        | |               |    GELAP...    |                  | |         ||",
+                "||                          |_||_||_||_||_||_|                              ||",
+                "||                                                                          ||",
+                "||__________________________________________________________________________||",
+                "||//////////////////////////////////////////////////////////////////////////||"
+        };
+    }
+
+    private static String[] getGuardRoomArt() {
+        return new String[]{
+                "||==========================================================================||",
+                "||                                                  [ LOKER BESI ]          ||",
+                "||         [ MEJA ]                                  |==========|           ||",
+                "||        ________                                   |  [O]     |           ||",
+                "||       /   ()   \\                                  |          |           ||",
+                "||      |  KARTU   |                                 |          |           ||",
+                "||      |__________|                                 |__________|           ||",
+                "||        |      |                                                          ||",
+                "||       _|      |_                                                         ||",
+                "||__________________________________________________________________________||",
+                "||//////////////////////////////////////////////////////////////////////////||"
+        };
+    }
+
+    private static String[] getWardenOfficeArt() {
+        return new String[]{
+                "||==========================================================================||",
+                "||                                                                          ||",
+                "||    [ LUKISAN ]                                     [ GERBANG UTAMA ]     ||",
+                "||    | (Brankas)|                                     |=============|      ||",
+                "||    |__________|            [ MEJA MEWAH ]           | || || || || |      ||",
+                "||                            _____________            | || || || || |      ||",
+                "||                           |             |           | || || || || |      ||",
+                "||                           |   [DOCS]    |           |=============|      ||",
+                "||                           |_____________|                                ||",
+                "||                                                                          ||",
+                "||__________________________________________________________________________||",
+                "||//////////////////////////////////////////////////////////////////////////||"
+        };
+    }
+
+    public static void printWinScreen() {
+        clearScreen();
+        printBorderTop();
+        System.out.printf("║ %-76s ║\n", " ");
+        System.out.printf("║             V I C T O R Y   A C H I E V E D ! ! !                         ║\n");
+        System.out.printf("║ %-76s ║\n", " ");
+        System.out.printf("║                  ___________                                              ║\n");
+        System.out.printf("║                 '._==_==_=_.'                                             ║\n");
+        System.out.printf("║                 .-\\:      /-.                                             ║\n");
+        System.out.printf("║                | (|:.     |) |                                            ║\n");
+        System.out.printf("║                 '-|:.     |-'                                             ║\n");
+        System.out.printf("║                   \\::.    /                                               ║\n");
+        System.out.printf("║                    '::. .'                                                ║\n");
+        System.out.printf("║                      ) (                                                  ║\n");
+        System.out.printf("║                    _.' '._                                                ║\n");
+        System.out.printf("║                   `\"\"\"\"\"\"\"`                                               ║\n");
+        System.out.printf("║ %-76s ║\n", " ");
+        printLine();
+        System.out.printf("║ %-76s ║\n", " ");
+        System.out.printf("║       CONGRATULATIONS! YOU HAVE ESCAPED ALL OBSTACLES.                    ║\n");
+        System.out.printf("║           THANK YOU FOR PLAYING 'ESCAPE AT ALL COST'                      ║\n");
+        System.out.printf("║ %-76s ║\n", " ");
+        printBorderBottom();
+
+        System.out.println("\nPress [ENTER] to return to the main menu...");
     }
 
 }

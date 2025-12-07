@@ -18,6 +18,8 @@ public class WorldBuilder {
 
         // --- 2. MEMBUAT ITEM ---
         Item kertasKode = new Item("Kertas", "Secarik kertas bertuliskan: 1234");
+        Item balokkayu = new Item("balokkayu", "Sebuah balok kayu");
+        Item balokbesi = new Item("balokbesi", "Sebuah balok besi");
         Item palu = new Item("Palu", "Palu besi yang kuat.");
         //Item senter = new Item("Senter", "Senter LED terang (Butuh baterai?).");
         //Item jeruk = new Item("Jeruk", "Buah jeruk segar.");

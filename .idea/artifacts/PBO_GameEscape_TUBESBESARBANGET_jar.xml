@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="PBO_GameEscape_TUBESBESARBANGET:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/PBO_GameEscape_TUBESBESARBANGET_jar</output-path>
+    <root id="archive" name="PBO_GameEscape_TUBESBESARBANGET.jar">
+      <element id="module-output" name="PBO_GameEscape_TUBESBESARBANGET" />
+    </root>
+  </artifact>
+</component>
